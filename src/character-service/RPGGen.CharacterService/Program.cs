@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RPGGen.CharacterService.Data;
+using RPGGen.CharacterService.Domain;
+using RPGGen.CharacterService.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-  options.UseSqlServer(builder.Configuration.GetConnectionString("db"), 
-                       x=> x.MigrationsHistoryTable("__EfMigrations", AppDbContext.SCHEMA)));
+  options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
+builder.Services.AddScoped<IAppDbContext, AppDbContext>();
+
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 
 var app = builder.Build();
 

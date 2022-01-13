@@ -9,12 +9,8 @@ namespace RPGGen.CharacterService.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "character");
-
             migrationBuilder.CreateTable(
                 name: "Characters",
-                schema: "character",
                 columns: table => new
                 {
                     CharacterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -37,8 +33,7 @@ namespace RPGGen.CharacterService.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Characters",
-                schema: "character");
+                name: "Characters");
         }
     }
 }

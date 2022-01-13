@@ -38,7 +38,7 @@ namespace RPGGen.ItemService.Domain.Services
 
         public async Task UpdateItem(Guid id, Item updatedItem)
         {
-            var item = await _context.Items.FirstAsync();
+            var item = await _context.Items.FirstAsync(x => x.ItemId == id);
             item.Name = updatedItem.Name;
             item.Description = updatedItem.Description;
             await _context.SaveChangesAsync();

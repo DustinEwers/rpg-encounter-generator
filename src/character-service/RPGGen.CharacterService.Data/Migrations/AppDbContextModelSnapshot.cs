@@ -17,7 +17,6 @@ namespace RPGGen.CharacterService.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("character")
                 .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -64,7 +63,7 @@ namespace RPGGen.CharacterService.Data.Migrations
 
                     b.HasKey("CharacterId");
 
-                    b.ToTable("Characters", "character");
+                    b.ToTable("Characters");
                 });
 #pragma warning restore 612, 618
         }
