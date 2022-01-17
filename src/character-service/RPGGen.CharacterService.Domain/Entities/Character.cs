@@ -14,4 +14,5 @@ public class Character
     public int Charisma { get; set; }
 
     public string Backstory { get; set; } = string.Empty;
+    public ICollection<InventoryItem> InventoryItems { get; set; }
 }

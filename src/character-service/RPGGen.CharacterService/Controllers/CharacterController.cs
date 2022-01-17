@@ -24,6 +24,13 @@ namespace RPGGen.CharacterService.Controllers
             return await _service.GetCharacters();
         }
 
+        // GET: api/<CharacterController>
+        [HttpGet("{characterId}")]
+        public async Task<Character> Get(Guid characterId)
+        {
+            return await _service.GetCharacter(characterId);
+        }
+
         // POST api/<CharacterController>
         [HttpPost]
         public async Task Post([FromBody] Character value)

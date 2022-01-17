@@ -2,12 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using RPGGen.CharacterService.Data;
 using RPGGen.CharacterService.Domain;
 using RPGGen.CharacterService.Domain.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(j => {
+    j.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

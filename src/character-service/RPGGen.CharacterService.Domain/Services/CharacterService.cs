@@ -5,6 +5,7 @@ namespace RPGGen.CharacterService.Domain.Services
     public interface ICharacterService
     {
         Task<IEnumerable<Character>> GetCharacters();
+        Task<Character> GetCharacter(Guid characterId);
         Task AddCharacter(Character value);
         Task UpdateCharacter(Guid id, Character value);
         Task DeleteCharacter(Guid id);
@@ -32,11 +33,18 @@ namespace RPGGen.CharacterService.Domain.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Character>> GetCharacters()
-        {
-            return await _context.Characters.ToListAsync();
-        }
+        public async Task<IEnumerable<Character>> GetCharacters() => await _context.Characters.ToListAsync();
 
+        public async Task<Character> GetCharacter(Guid characterId)
+        {
+            var character = await _context.Characters
+                .Where(c => c.CharacterId == characterId)
+                .Include("InventoryItems.Item")
+                .FirstAsync();
+
+            return character;
+        }
+        
         public async Task UpdateCharacter(Guid id, Character updatedItem)
         {
             var item = await _context.Characters.FirstAsync(x=> x.CharacterId == id);
