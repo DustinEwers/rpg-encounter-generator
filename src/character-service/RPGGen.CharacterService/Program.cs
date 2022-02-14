@@ -10,7 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(j => {
     j.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
+}).AddDapr();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAppDbContext, AppDbContext>();
 
 builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<IItemService, ItemService>();
 
 var app = builder.Build();
 
@@ -34,6 +36,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCloudEvents();
+
 app.MapControllers();
+
+app.MapSubscribeHandler();
 
 app.Run();

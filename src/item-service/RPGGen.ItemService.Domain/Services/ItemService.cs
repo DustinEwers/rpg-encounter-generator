@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapr.Client;
+using Microsoft.EntityFrameworkCore;
 
 namespace RPGGen.ItemService.Domain.Services
 {
@@ -12,16 +13,20 @@ namespace RPGGen.ItemService.Domain.Services
     public class ItemService : IItemService
     {
         private readonly IAppDbContext _context;
+        private readonly DaprClient _daprClient;
 
-        public ItemService(IAppDbContext context)
-        {
-            _context = context;
-        }
+        const string storeName = "item-store";
+        const string key = "item-list";
+
+        public ItemService(IAppDbContext context, DaprClient daprClient) => (_context, _daprClient) = (context, daprClient);
 
         public async Task AddItem(Item value)
         {
             _context.Items.Add(value);
             await _context.SaveChangesAsync();
+
+            // Clear out the cache
+            await _daprClient.DeleteStateAsync(storeName, key);
         }
 
         public async Task DeleteItem(Guid id)
@@ -33,7 +38,13 @@ namespace RPGGen.ItemService.Domain.Services
 
         public async Task<IEnumerable<Item>> GetItems()
         {
-            return await _context.Items.ToListAsync();
+            var cachedItems = await _daprClient.GetStateAsync<IEnumerable<Item>>(storeName, key);
+            if (cachedItems == null) {
+                Thread.Sleep(2000); // Pretend this takes a while
+                return await _context.Items.ToListAsync();
+            }
+
+            return cachedItems;
         }
 
         public async Task UpdateItem(Guid id, Item updatedItem)
@@ -42,6 +53,11 @@ namespace RPGGen.ItemService.Domain.Services
             item.Name = updatedItem.Name;
             item.Description = updatedItem.Description;
             await _context.SaveChangesAsync();
+
+            await _daprClient.PublishEventAsync("dnd-app-pubsub", "items", item);
+
+            // Clear out the cache
+            await _daprClient.DeleteStateAsync(storeName, key);
         }
     }
 }
