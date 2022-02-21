@@ -16,6 +16,7 @@ namespace RPGGen.ItemService.Domain.Services
         private readonly DaprClient _daprClient;
 
         const string storeName = "item-store";
+        //const string storeName = "statestore";
         const string key = "item-list";
 
         public ItemService(IAppDbContext context, DaprClient daprClient) => (_context, _daprClient) = (context, daprClient);

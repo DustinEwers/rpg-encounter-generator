@@ -6,6 +6,3 @@ spec:
   topic: items
   route: /item-update
   pubsubname: dnd-app-pubsub
-scopes:
-  - item-service
-  - character-service

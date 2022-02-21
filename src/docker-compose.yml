@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  rpggen.characterservice:
+    image: ${DOCKER_REGISTRY-}rpggencharacterservice
+    build:
+      context: .
+      dockerfile: character-service/RPGGen.CharacterService/Dockerfile
+    ports:
+      - "3001:80"
+      - "53000:50001"
+  
+  characterservice-dapr:
+    image: "daprio/daprd:1.5.1"
+    depends_on:
+      - rpggen.characterservice
+    network_mode: "service:rpggen.characterservice"
+
+  rpggen.itemservice:
+    image: ${DOCKER_REGISTRY-}rpggenitemservice
+    build:
+      context: .
+      dockerfile: item-service/RPGGen.ItemService/Dockerfile
+    ports:
+      - "3002:80"
+      - "52000:50001"
+
+  itemservice-dapr:
+    image: "daprio/daprd:1.5.1"
+    depends_on:
+      - rpggen.itemservice
+    network_mode: "service:rpggen.itemservice"
+
+  zipkin:
+    image: openzipkin/zipkin-slim
+
+  # rabbitmq:
+  #   image: rabbitmq:3-management-alpine
+
+  redis:
+    image: redis:alpine
+
+  dapr-placement:
+    image: "daprio/dapr:1.5.1"

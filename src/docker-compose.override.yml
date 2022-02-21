@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  rpggen.characterservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+  characterservice-dapr:
+    command: [ "./daprd", "-app-id", "CharacterService", "-app-port", "80",
+               "-placement-host-address", "dapr-placement:50000",
+               "-components-path", "/infra/dapr/components",
+               "-config", "/infra/dapr/dapr-config.yaml" ]
+    volumes:
+      - "./infra/dapr/:/dapr"
+
+  rpggen.itemservice:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+  itemservice-dapr:
+    command: [ "./daprd", "-app-id", "ItemService", "-app-port", "80",
+               "-placement-host-address", "dapr-placement:50000",
+               "-components-path", "/dapr/components",
+               "-config", "/dapr/dapr-config.yaml" ]
+    volumes:
+      - "./infra/dapr/:/dapr"
+
+  # rabbitmq:
+  #   ports:
+  #     - "5672:5672"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "5379:6379"
+
+  zipkin:
+    ports:
+      - "5411:9411"
+
+  dapr-placement:
+    command: ["./placement", "-port", "50000", "-log-level", "debug"]
+    ports:
+      - "50000:50000"

@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "systemName": {
+            "value": "rpggen"
+        },
+        "environment": {
+            "value": "d"
+        },
+        "sequence": {
+            "value": "01"
+        },
+        "location": {
+            "value": "centralus"
+        },
+        "dbSkuName": {
+            "value": "S0"
+        },
+        "dbSkuTier": {
+            "value": "Standard"
+        }
+    }
+}
