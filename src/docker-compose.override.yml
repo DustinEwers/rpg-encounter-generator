@@ -12,8 +12,8 @@ services:
   characterservice-dapr:
     command: [ "./daprd", "-app-id", "CharacterService", "-app-port", "80",
                "-placement-host-address", "dapr-placement:50000",
-               "-components-path", "/infra/dapr/components",
-               "-config", "/infra/dapr/dapr-config.yaml" ]
+               "-components-path", "/dapr/components",
+               "-config", "/dapr/dapr-config.yaml" ]
     volumes:
       - "./infra/dapr/:/dapr"
 
@@ -32,10 +32,6 @@ services:
                "-config", "/dapr/dapr-config.yaml" ]
     volumes:
       - "./infra/dapr/:/dapr"
-
-  # rabbitmq:
-  #   ports:
-  #     - "5672:5672"
 
   redis:
     image: redis:alpine
