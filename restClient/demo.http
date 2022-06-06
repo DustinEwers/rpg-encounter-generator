@@ -1,0 +1,24 @@
+
+## Character Service ## 
+
+### Get Character List
+GET http://localhost:62019/api/Character
+
+### Get Bob's Data
+GET http://localhost:62019/api/Character/d48ac3f1-3c21-44d9-bace-c5564e0678b2
+
+## Item Service ## 
+
+### Get Items
+GET http://localhost:62020/api/Items
+
+
+### Update Item
+PUT http://localhost:62020/api/Items/a3ac5d10-f16b-4e64-a8e9-56ce761ac6b0
+Content-Type: application/json
+
+{
+    "itemId": "a3ac5d10-f16b-4e64-a8e9-56ce761ac6b0",
+    "name": "Basic Cloak",
+    "description": "Basic, but not bad"
+}

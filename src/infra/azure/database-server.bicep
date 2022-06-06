@@ -1,7 +1,7 @@
 param location string
 param dbServerName string
 
-param adminName string = '${uniqueString('BatteryHorseStapleCorrect!')}'
+param adminName string = uniqueString('BatteryHorseStapleCorrect!')
 
 @secure()
 param adminPassword string = newGuid()

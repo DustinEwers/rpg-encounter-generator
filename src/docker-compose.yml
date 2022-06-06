@@ -11,7 +11,7 @@ services:
       - "53000:50001"
   
   characterservice-dapr:
-    image: "daprio/daprd:1.5.1"
+    image: "daprio/daprd:1.7.4"
     depends_on:
       - rpggen.characterservice
     network_mode: "service:rpggen.characterservice"
@@ -26,7 +26,7 @@ services:
       - "52000:50001"
 
   itemservice-dapr:
-    image: "daprio/daprd:1.5.1"
+    image: "daprio/daprd:1.7.4"
     depends_on:
       - rpggen.itemservice
     network_mode: "service:rpggen.itemservice"
@@ -34,11 +34,8 @@ services:
   zipkin:
     image: openzipkin/zipkin-slim
 
-  # rabbitmq:
-  #   image: rabbitmq:3-management-alpine
-
   redis:
     image: redis:alpine
 
   dapr-placement:
-    image: "daprio/dapr:1.5.1"
+    image: "daprio/dapr:1.7.4"
